@@ -42,3 +42,11 @@ jobs:
         name: masvs_full.yaml
         path: tools/masvs_full.yaml
     
+    - name: Generate Checklist Excel
+      run: cd tools && python3 yaml_to_excel.py
+
+    - name: Upload Enhanced YAML export
+      uses: actions/upload-artifact@v1
+      with:
+        name: checklist_out.xlsx
+        path: tools/checklist_out.xlsx
