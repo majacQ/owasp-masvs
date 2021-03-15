@@ -27,7 +27,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: masvs_zhtw.xml
-        path: masvs_zhtw.xml
+        path: tools/masvs_zhtw.xml
 
     - name: Export Japanse YAML
       run: cd tools && python3 export.py -f yaml -l ja > masvs_ja.yaml
@@ -36,4 +36,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: masvs_ja.yaml
-        path: masvs_ja.yaml
+        path: tools/masvs_ja.yaml
