@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Install pip requirements
+      run: pip3 install -r requirements.txt
+
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
@@ -17,20 +21,8 @@ jobs:
         fetch-depth: 1
         path: owasp-mstg
 
-    - name: list from tools
-      run: cd tools && ls ../owasp-mstg
-
-    - name: list all
-      run: ls -l
-
-    - name: list mstg/Document
-      run: ls -l owasp-mstg/Document
-
     - name: MSTG to HTML
       run: . tools/mstg_to_html.sh
-
-    - name: list html
-      run: ls -l html
 
     - name: Export YAML
       run: cd tools && python3 export.py -f yaml > masvs.yaml
