@@ -1,0 +1,37 @@
+name: Document Export
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - uses: actions/checkout@v1
+      with:
+        repository: "https://github.com/OWASP/owasp-mstg.git"
+        fetch-depth: 1
+    
+    - name: List MSTG
+      run: ls -l owasp-mstg
+
+    - name: Export Chinese XML
+      run: cd tools && python3 export.py -f xml -l zhtw > masvs_zhtw.xml
+
+    - name: Upload XML export
+      uses: actions/upload-artifact@v1
+      with:
+        name: masvs_zhtw.xml
+        path: masvs_zhtw.xml
+
+    - name: Export Japanse YAML
+      run: cd tools && python3 export.py -f yaml -l ja > masvs_ja.yaml
+
+    - name: Upload YAML export
+      uses: actions/upload-artifact@v1
+      with:
+        name: masvs_ja.yaml
+        path: masvs_ja.yaml
