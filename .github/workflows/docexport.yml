@@ -16,24 +16,25 @@ jobs:
         ref: "master"
         fetch-depth: 1
         path: owasp-mstg
-    
-    - name: List MSTG
-      run: ls -l owasp-mstg
 
-    - name: Export Chinese XML
-      run: cd tools && python3 export.py -f xml -l zhtw > masvs_zhtw.xml
+    - name: MSTG to HTML
+      run: cd tools && mstg_to_html.sh
 
-    - name: Upload XML export
-      uses: actions/upload-artifact@v1
-      with:
-        name: masvs_zhtw.xml
-        path: tools/masvs_zhtw.xml
-
-    - name: Export Japanse YAML
-      run: cd tools && python3 export.py -f yaml -l ja > masvs_ja.yaml
+    - name: Export YAML
+      run: cd tools && python3 export.py -f yaml > masvs.yaml
 
     - name: Upload YAML export
       uses: actions/upload-artifact@v1
       with:
-        name: masvs_ja.yaml
-        path: tools/masvs_ja.yaml
+        name: masvs.yaml
+        path: tools/masvs.yaml
+
+    - name: Enhance YAML with MSTG Data
+      run: cd tools && python3 parse_html.py
+
+    - name: Upload Enhanced YAML export
+      uses: actions/upload-artifact@v1
+      with:
+        name: masvs_full.yaml
+        path: tools/masvs_full.yaml
+    
