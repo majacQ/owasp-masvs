@@ -14,6 +14,7 @@ jobs:
       with:
         repository: "OWASP/owasp-mstg.git"
         fetch-depth: 1
+        path: owasp-mstg
     
     - name: List MSTG
       run: ls -l owasp-mstg
