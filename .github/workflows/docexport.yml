@@ -27,7 +27,10 @@ jobs:
       run: ls -l owasp-mstg/Document
 
     - name: MSTG to HTML
-      run: cd tools && . ./mstg_to_html.sh
+      run: . tools/mstg_to_html.sh
+
+    - name: list html
+      run: ls -l html
 
     - name: Export YAML
       run: cd tools && python3 export.py -f yaml > masvs.yaml
