@@ -12,7 +12,7 @@ jobs:
         fetch-depth: 1
     - uses: actions/checkout@v2
       with:
-        repository: "https://github.com/OWASP/owasp-mstg.git"
+        repository: "OWASP/owasp-mstg.git"
         fetch-depth: 1
     
     - name: List MSTG
