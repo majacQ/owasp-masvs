@@ -14,7 +14,7 @@ MASVS_TITLES = {
 
 def get_hyperlink(url):
     title = url.split('#')[1].replace('-',' ').capitalize() 
-    return f'=HYPERLINK(CONCATENATE(BASE_URL,"{url}"), "{title}")'
+    return f'=HYPERLINK("{url}", "{title}")'
 
 CHECKMARK = "✓"
 
