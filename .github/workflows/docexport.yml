@@ -17,6 +17,15 @@ jobs:
         fetch-depth: 1
         path: owasp-mstg
 
+    - name: list from tools
+      run: cd tools && ls ../owasp-mstg
+
+    - name: list all
+      run: ls -l
+
+    - name: list mstg/Document
+      run: ls -l owasp-mstg/Document
+
     - name: MSTG to HTML
       run: cd tools && ./mstg_to_html.sh
 
