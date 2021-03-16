@@ -111,7 +111,7 @@ def write_file(masvs_file, input_file, output_file):
     #     masvs_dict = yaml.load(open(file))
     #     enhanced_masvs_dict[MASVS_TITLES[file.stem]] = masvs_dict
 
-    masvs = yaml.load(open(masvs_file))
+    masvs = yaml.safe_load(open(masvs_file))
     # files = ['Document/0x05b-Basic-Security_Testing.html', 'Document/0x05g-Testing-Network-Communication.html']
 
     # with open(files[1], 'r') as f:

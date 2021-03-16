@@ -29,7 +29,7 @@ CHECKMARK = "✓"
 
 def write_table(masvs_file, input_file, output_file):
 
-    masvs_dict = yaml.load(open(masvs_file))
+    masvs_dict = yaml.safe_load(open(masvs_file))
 
     wb = load_workbook(filename=input_file)
 
