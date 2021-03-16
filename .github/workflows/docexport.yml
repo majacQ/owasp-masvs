@@ -4,6 +4,9 @@ on: [push]
 
 jobs:
   build:
+    strategy:
+      matrix:
+        languages: ['de', 'en', 'es', 'fa', 'fr', 'hi', 'ja', 'ko', 'ru', 'zhcn', 'zhtw']
     runs-on: ubuntu-latest
 
     steps:
@@ -23,6 +26,9 @@ jobs:
 
     - name: MSTG to HTML
       run: . tools/mstg_to_html.sh
+
+    - name: Matrix Export YAML ${{ matrix.languages }}
+      run: cd tools && python3 export.py -f yaml -l ${{ matrix.languages }} > masvs_${{ matrix.languages }}.yaml
 
     - name: Export YAML
       run: cd tools && ./gen_all_excel.sh
