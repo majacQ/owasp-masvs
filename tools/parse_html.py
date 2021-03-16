@@ -59,10 +59,10 @@ def get_testcases_info(chapter_file_name, chapter):
     return testcases_info
 
 def print_yaml(data_dict):
-    print(yaml.dump(data_dict, indent=4, default_flow_style=False, sort_keys=False))
+    print(yaml.dump(data_dict, allow_unicode=True, indent=4, default_flow_style=False, sort_keys=False))
 
 def write_yaml_file(name, data_dict):
-    Path(name).write_text(yaml.dump(data_dict, indent=4, default_flow_style=False, sort_keys=False))
+    Path(name).write_text(yaml.dump(data_dict, allow_unicode=True, indent=4, default_flow_style=False, sort_keys=False))
 
 def get_section_plain_text(chapter, starts_with_str):
 
@@ -105,42 +105,59 @@ def get_links_to_tools_per_section(chapter):
     
     return tool_links
 
-# enhanced_masvs_dict = {}
-# for file in Path('masvs_yaml').glob('*.yaml'):
-#     masvs_dict = yaml.load(open(file))
-#     enhanced_masvs_dict[MASVS_TITLES[file.stem]] = masvs_dict
+def write_file(masvs_file, input_file, output_file):
+    # enhanced_masvs_dict = {}
+    # for file in Path('masvs_yaml').glob('*.yaml'):
+    #     masvs_dict = yaml.load(open(file))
+    #     enhanced_masvs_dict[MASVS_TITLES[file.stem]] = masvs_dict
 
-masvs = yaml.load(open('masvs.yaml'))
-# files = ['Document/0x05b-Basic-Security_Testing.html', 'Document/0x05g-Testing-Network-Communication.html']
+    masvs = yaml.load(open(masvs_file))
+    # files = ['Document/0x05b-Basic-Security_Testing.html', 'Document/0x05g-Testing-Network-Communication.html']
 
-# with open(files[1], 'r') as f:
-testcases_info = []
+    # with open(files[1], 'r') as f:
+    testcases_info = []
 
-for file in Path('html').glob('*.html'):
+    for file in Path(input_file).glob('*.html'):
 
-    contents = file.read_text()
+        contents = file.read_text()
 
-    chapter = BeautifulSoup(contents, 'lxml')
+        chapter = BeautifulSoup(contents, 'lxml')
 
-    # print(get_links_to_other_chapters(chapter))
+        # print(get_links_to_other_chapters(chapter))
 
-    # print(get_all_links_to_tools(chapter))
-    # print(get_links_to_tools_per_section(chapter))
+        # print(get_all_links_to_tools(chapter))
+        # print(get_links_to_tools_per_section(chapter))
 
-    testcases_info += get_testcases_info(f"{file.stem}.md", chapter)
-    # print_yaml(testcases_info)
+        testcases_info += get_testcases_info(f"{file.stem}.md", chapter)
+        # print_yaml(testcases_info)
 
-    # print(get_sections_plain_text(chapter, "overview"))
-    # print(get_sections_innerHtml(chapter, "overview"))
+        # print(get_sections_plain_text(chapter, "overview"))
+        # print(get_sections_innerHtml(chapter, "overview"))
 
-for tc in testcases_info:
-    for id in tc['mstg_ids']:
-        if masvs.get(id): 
-            masvs_req = masvs[id]
-            if not masvs_req.get('links'):
-                masvs_req['links'] = []
-            masvs_req['links'].append(tc['link'])
-        # masvs_dict[id]['solution'].append(tc['overview']) # todo
+    for tc in testcases_info:
+        for id in tc['mstg_ids']:
+            if masvs.get(id): 
+                masvs_req = masvs[id]
+                if not masvs_req.get('links'):
+                    masvs_req['links'] = []
+                masvs_req['links'].append(tc['link'])
+            # masvs_dict[id]['solution'].append(tc['overview']) # todo
 
-# print_yaml(masvs)
-write_yaml_file('masvs_full.yaml', masvs)
+    # print_yaml(masvs)
+    write_yaml_file(output_file, masvs)
+
+def main():
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Export the MASVS requirements as Excel. Default language is en.')
+    parser.add_argument('-m', '--masvs', required=True)
+    parser.add_argument('-i', '--inputfile', required=True, default='html')
+    parser.add_argument('-o', '--outputfile', required=True)
+
+    args = parser.parse_args()
+
+    write_file(args.masvs, args.inputfile, args.outputfile)
+
+
+if __name__ == '__main__':
+    main()
