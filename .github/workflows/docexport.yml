@@ -3,10 +3,7 @@ name: Document Export
 on: [push]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        languages: ['de', 'en', 'es', 'fa', 'fr', 'hi', 'ja', 'ko', 'ru', 'zhcn', 'zhtw']
+  Generate-Checklists:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,32 +18,29 @@ jobs:
         fetch-depth: 1
         path: owasp-mstg
 
-    - name: Install pip requirements
+    - name: Install pip Requirements
       run: pip3 install -r tools/requirements.txt
 
-    - name: MSTG to HTML
+    - name: Convert MSTG Testing Chapters to HTML
       run: . tools/mstg_to_html.sh
 
-    - name: Matrix Export YAML ${{ matrix.languages }}
-      run: cd tools && python3 export.py -f yaml -l ${{ matrix.languages }} > masvs_${{ matrix.languages }}.yaml
-
-    - name: Export YAML
+    - name: Export YAML, enhance with MSTG and generate Excel
       run: cd tools && ./gen_all_excel.sh
 
-    - name: Upload YAML export
+    - name: Upload MASVS YAML
       uses: actions/upload-artifact@v2
       with:
-        name: masvs.yaml
+        name: MASVS YAML Files
         path: tools/masvs_*.yaml
 
-    - name: Upload Enhanced YAML export
+    - name: Upload Enhanced MASVS YAML
       uses: actions/upload-artifact@v2
       with:
-        name: enhanced_masvs
+        name: Enhanced MASVS YAML Files
         path: tools/masvs_full_*.yaml
 
     - name: Upload Checklists
       uses: actions/upload-artifact@v2
       with:
-        name: checklists
+        name: Checklists
         path: tools/checklist_*.xlsx
